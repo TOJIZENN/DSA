@@ -1,26 +1,24 @@
 class Solution {
 public:
-    bool isCompleteTree(TreeNode* root) {
-        if (!root) return true;
-        
-        queue<pair<TreeNode*, unsigned long long>> q;
-        q.push({root, 0});
-        
-        int count = 0;         // number of non-null nodes
-        int lastIndex = 0;     // max index assigned
-        
-        while (!q.empty()) {
-            auto [node, idx] = q.front();
+    bool isCompleteTree(TreeNode* root) 
+    {
+        queue<TreeNode*>q;
+        q.push(root);
+        bool past=false;
+
+        while(!q.empty())
+        {
+            TreeNode* node=q.front();
             q.pop();
-            
-            if (node) {
-                count++;
-                lastIndex = idx;
-                q.push({node->left, 2 * idx + 1});
-                q.push({node->right, 2 * idx + 2});
+            if(node==NULL){past=true;}
+            else
+            {
+                if(past==true){return false;}
+            q.push(node->left);
+            q.push(node->right);
             }
         }
-        
-        return lastIndex == count - 1;
+    
+    return true;
     }
 };
