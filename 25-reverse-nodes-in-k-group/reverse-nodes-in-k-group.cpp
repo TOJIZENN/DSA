@@ -1,60 +1,45 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-ListNode* reverseList(ListNode* head) 
-{
-   if(!head || !head->next){return head;}
-   ListNode* node=reverseList(head->next);
-   head->next->next=head;
-   head->next=NULL;
-   return node;
-
+    int getSize(ListNode* head) {
+        int cnt = 0;
+        while (head) {
+            cnt++;
+            head = head->next;
+        }
+        return cnt;
     }
-    ListNode* reverseKGroup(ListNode* head, int k)
-    {
-        int size=0;
-        ListNode*temp=head;
-        while(temp!=nullptr)
-        {
-            size++;
-            temp=temp->next;
-        }
-        int group=size/k;  
-        ListNode* prevhead=nullptr;
-        ListNode* currhead=head;
-        ListNode* ans=nullptr;
 
-        for(int i=0;i<group;i++)
-        {
-            ListNode* prev=nullptr;
-            ListNode* curr=currhead;
-            ListNode* nextnode=nullptr;
-            for(int j=0;j<k;j++)//reverse k group
-            {
-                nextnode=curr->next;
-                curr->next=prev;
-                prev=curr;
-                curr=nextnode;
+    // Standard recursive reversal
+    ListNode* reverse(ListNode* head) {
+        if (!head || !head->next) return head;
+        ListNode* newHead = reverse(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return newHead;
+    }
 
-            }
-            if(prevhead==nullptr){ans=prev;}
-            else{
-                prevhead->next=prev;
-            }
-            prevhead=currhead;
-            currhead=curr;
+    // Recursive group reversal logic
+    ListNode* solve(ListNode* head, int k, int groupsRemaining) {
+        if (groupsRemaining == 0) return head;
+
+        ListNode* tail = head;
+        for (int i = 1; i < k; i++) {
+            if (tail) tail = tail->next;
         }
-        prevhead->next=currhead;
-  return ans;
-       
+
+        if (!tail) return head; // Not enough nodes
+
+        ListNode* nextGroup = tail->next;
+        tail->next = nullptr;
+
+        ListNode* newHead = reverse(head);
+        head->next = solve(nextGroup, k, groupsRemaining - 1);
+        return newHead;
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        int size = getSize(head);
+        int totalGroups = size / k;
+        return solve(head, k, totalGroups);
     }
 };
