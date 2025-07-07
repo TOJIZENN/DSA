@@ -16,7 +16,7 @@ void solve(int i,set<vector<int>>&st,vector<int>&temp,vector<int>& nums,int n)
     vector<vector<int>> subsetsWithDup(vector<int>& nums)
     {
         set<vector<int>>st;
-        sort(nums.begin(),nums.end());
+       sort(nums.begin(),nums.end());
         vector<int>temp;
         vector<vector<int>>ans;
         int n=nums.size();
