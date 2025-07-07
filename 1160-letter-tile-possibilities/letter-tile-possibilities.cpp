@@ -1,24 +1,27 @@
 class Solution {
 public:
-void solve(string &tiles,vector<bool>&vis,int &ans)
+int n;
+void solve(string &tiles,vector<bool>&vis, unordered_set<string>&ans,string &curr)
 {
-    for(int i=0;i<tiles.size();i++)
+    ans.insert(curr);
+    for(int i=0;i<n;i++)
     {
         if(vis[i]==true){continue;}
-        if(i>0 && tiles[i]==tiles[i-1] && !vis[i-1]){continue;}
         vis[i]=true;
-        ans++;
-        solve(tiles,vis,ans);
+        curr.push_back(tiles[i]);
+        solve(tiles,vis,ans,curr);
         vis[i]=false;
+        curr.pop_back();
     }
 
 }
     int numTilePossibilities(string tiles) 
     {
-     int  ans=0;
-     sort(tiles.begin(),tiles.end());
-   vector<bool> vis(tiles.size(),false);
-      solve(tiles,vis,ans);
-        return ans;
+      n=tiles.size();
+   vector<bool> vis(n,false);
+   unordered_set<string>ans;
+   string curr="";
+      solve(tiles,vis,ans,curr);
+        return ans.size()-1;
     }
 };
