@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n+1, -1));
+
+        function<int(int, int)> solve = [&](int idx, int prevIdx) -> int {
+            if (idx == n) return 0;
+
+            if (dp[idx][prevIdx + 1] != -1) return dp[idx][prevIdx + 1];
+
+            int notTake = solve(idx + 1, prevIdx); // skip current
+            int take = 0;
+
+            if (prevIdx == -1 || nums[idx] > nums[prevIdx]) {
+                take = 1 + solve(idx + 1, idx); // take current
+            }
+
+            return dp[idx][prevIdx + 1] = max(take, notTake);
+        };
+
+        return solve(0, -1);
+    }
+};
