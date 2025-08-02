@@ -1,9 +1,9 @@
 class Solution {
 public:
-    int dp[1001][1001];  // safer bounds for text1.size() and text2.size()
+    int dp[1001][1001]; 
 
     int solve(int i, int j, string& text1, string& text2, int n, int m) {
-        if (i == n || j == m) return 0; // Fix: check for end of string
+        if (i == n || j == m) return 0; 
 
         if (dp[i][j] != -1) return dp[i][j];
 
