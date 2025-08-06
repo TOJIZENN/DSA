@@ -4,7 +4,7 @@ int n1,n2,n3;
 int dp[500][500];
 bool solve(int i,int j,int k,string s1, string s2, string s3)
 {
-if(i==n1 && j==n2 && k==n3){return true;}
+if(i>=n1 && j>=n2 && k>=n3){return true;}
 if(dp[i][j]!=-1){return dp[i][j];}
 if(i < s1.size()&&s1[i]==s3[k]&&s2[j]!=s3[k])
 {
