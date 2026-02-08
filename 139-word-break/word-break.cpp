@@ -1,31 +1,25 @@
 class Solution {
 public:
-unordered_set<string>st;
-int n;
-int dp[301];
-bool solve(int id,string& s)
+int dp[300][300];
+bool solve(int i ,int j,string &s,set<string>&st)
 {
-if(id>=n){return true;}
-if (dp[id]!=-1){return dp[id];}
-if(st.find(s)!=st.end()){return true;}
-for(int i=1;i<=n;i++)
-{
-    string temp=s.substr(id,i);
-    if(st.find(temp)!=st.end() && solve(id+i,s))
+    if(j>s.size()){return false;}
+     if (j == s.size()) {
+            return st.count(s.substr(i, j - i));
+        }
+        if(dp[i][j]!=-1){return dp[i][j];}
+    bool take=false;
+    if(st.find(s.substr(i,j-i))!=st.end())
     {
-        return dp[id]=true;
+     take=solve(j,j+1,s,st);
     }
-}
-return dp[id]=false;
+bool notake=solve(i,j+1,s,st);
+return dp[i][j]=notake || take;
 }
     bool wordBreak(string s, vector<string>& wordDict) 
     {
         memset(dp,-1,sizeof(dp));
-        n=s.size();
-        for(auto it:wordDict)
-        {
-            st.insert(it);
-        }
-        return solve(0,s);
+        set<string>st(wordDict.begin(),wordDict.end());
+        return solve(0,1,s,st);  
     }
 };
